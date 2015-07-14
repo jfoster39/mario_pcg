@@ -350,6 +350,8 @@ public class MarioComponent extends JComponent implements Runnable, KeyListener,
 		    	Mario.coins = 0;
 		    	Mario.lives = 3;
 
+                System.out.println( "Look in MarioComponent.java - Check toCustomGame function to set this to something other than randomLevel" );
+
 		    	randomLevel.init();
 		    	randomLevel.setSound(sound);
 		    	scene = randomLevel;
