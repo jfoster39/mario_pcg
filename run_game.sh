@@ -6,4 +6,4 @@ if [ "$1" == "--build" ]; then
 fi
 
 java -cp bin dk.itu.mario.engine.Play
-java -cp bin dk.itu.mario.engine.PlayCustomized
+java -cp bin dk.itu.mario.engine.Play
