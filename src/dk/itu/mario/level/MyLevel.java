@@ -11,23 +11,28 @@ import dk.itu.mario.engine.sprites.Enemy;
 
 public class MyLevel extends Level{
 	//Store information about the level
-	 public   int ENEMIES = 0; //the number of enemies the level contains
-	 public   int BLOCKS_EMPTY = 0; // the number of empty blocks
-	 public   int BLOCKS_COINS = 0; // the number of coin blocks
-	 public   int BLOCKS_POWER = 0; // the number of power blocks
-	 public   int COINS = 0; //These are the coins in boxes that Mario collect
+	 public int ENEMIES 	 = 0; //the number of enemies the level contains
+	 public int BLOCKS_EMPTY = 0; // the number of empty blocks
+	 public int BLOCKS_COINS = 0; // the number of coin blocks
+	 public int BLOCKS_POWER = 0; // the number of power blocks
+	 public int COINS 	     = 0; //These are the coins in boxes that Mario collect
 
- 
+	 public final int SPEED_RUNNER  = 0;
+	 public final int COMPLETIONIST = 1;
+	 public final int CASUAL   	    = 2;
+
+
 	private static Random levelSeedRandom = new Random();
 	    public static long lastSeed;
 
 	    Random random;
 
-  
 	    private int difficulty;
 	    private int type;
 		private int gaps;
-		
+
+		private GamePlay playerM;
+
 		public MyLevel(int width, int height)
 	    {
 			super(width, height);
@@ -37,6 +42,8 @@ public class MyLevel extends Level{
 		public MyLevel(int width, int height, long seed, int difficulty, int type, GamePlay playerMetrics)
 	    {
 	        this(width, height);
+	        this.playerM = playerMetrics;
+	        System.out.println( "Seed for level: " + seed );
 	        creat(seed, difficulty, type);
 	    }
 
@@ -53,15 +60,10 @@ public class MyLevel extends Level{
 	        length += buildStraight(0, width, true);
 
 	        //create all of the medium sections
+	        // Do this while loop within each build section ??????????
 	        while (length < width - 64)
 	        {
-	            //length += buildZone(length, width - length);
-				length += buildStraight(length, width-length, false);
-				length += buildStraight(length, width-length, false);
-				length += buildHillStraight(length, width-length);
-				length += buildJump(length, width-length);
-				length += buildTubes(length, width-length);
-				length += buildCannons(length, width-length);
+	            length += buildZone(length, width - length, SPEED_RUNNER); // Default SPEED RUNNER at the moment
 	        }
 
 	        //set the end piece
@@ -105,6 +107,22 @@ public class MyLevel extends Level{
 
 	        fixWalls();
 
+	    }
+
+	    private int buildZone(int x, int maxLength, int playerType) {
+	    	switch (playerType) {
+	    		case SPEED_RUNNER:
+	    			//return buildSpeedRunnerLevel();
+	    			return 1;
+	    		case COMPLETIONIST:
+	    			//return buildCompletionistLevel();
+	    			return 1;
+	    		case CASUAL:
+	    			//return buildCasualLevel();
+	    			return 1;
+	    	}
+
+	    	return 0;
 	    }
 
 
@@ -420,7 +438,7 @@ public class MyLevel extends Level{
 
 	        s = random.nextInt(4);
 	        e = random.nextInt(4);
-	        
+
 	        //this fills the set of blocks and the hidden objects inside them
 	        if (floor - 4 > 0)
 	        {
@@ -625,7 +643,7 @@ public class MyLevel extends Level{
 	            }
 	        }
 	    }
-	    
+
 	    public RandomLevel clone() throws CloneNotSupportedException {
 
 	    	RandomLevel clone=new RandomLevel(width, height);
@@ -634,7 +652,7 @@ public class MyLevel extends Level{
 	    	clone.yExit = yExit;
 	    	byte[][] map = getMap();
 	    	SpriteTemplate[][] st = getSpriteTemplate();
-	    	
+
 	    	for (int i = 0; i < map.length; i++)
 	    		for (int j = 0; j < map[i].length; j++) {
 	    			clone.setBlock(i, j, map[i][j]);
@@ -645,7 +663,7 @@ public class MyLevel extends Level{
 	    	clone.BLOCKS_POWER = BLOCKS_POWER;
 	    	clone.ENEMIES = ENEMIES;
 	    	clone.COINS = COINS;
-	    	
+
 	        return clone;
 
 	      }
