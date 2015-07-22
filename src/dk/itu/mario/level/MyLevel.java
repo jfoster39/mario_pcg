@@ -50,7 +50,15 @@ public class MyLevel extends Level{
 
 	    public int classifyPlayer( GamePlay playerMetrics )
 	    {
-	    	return SPEED_RUNNER;
+	    	if ((playerMetrics.timeSpentRunning/playerMetrics.completionTime)>(2/3)){
+	    		return SPEED_RUNNER;
+	    	}
+	    	if ((playerMetrics.coinsCollected/playerMetrics.totalCoins)>(3/4)){
+	    		return COMPLETIONIST;
+	    	}
+	    	else{
+	    		return CASUAL;
+	    	}
 	    }
 
 	    public void creat(long seed, int difficulty, int type, int playerType)
