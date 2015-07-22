@@ -50,10 +50,10 @@ public class MyLevel extends Level{
 
 	    public int classifyPlayer( GamePlay playerMetrics )
 	    {
-	    	if ((playerMetrics.timeSpentRunning/playerMetrics.completionTime)>(2/3)){
+	    	if (((float)playerMetrics.timeSpentRunning/playerMetrics.completionTime)>((float)2/3)){
 	    		return SPEED_RUNNER;
 	    	}
-	    	if ((playerMetrics.coinsCollected/playerMetrics.totalCoins)>(3/4)){
+	    	if (((float)playerMetrics.coinsCollected/playerMetrics.totalCoins)>((float)3/4)){
 	    		return COMPLETIONIST;
 	    	}
 	    	else{
