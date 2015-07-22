@@ -66,10 +66,20 @@ public class MyLevel extends Level{
 	        length += buildStraight(0, width, true);
 
 	        //create all of the medium sections
-	        // Do this while loop within each build section ??????????
 	        while (length < width - 64)
 	        {
-	            length += buildZone(length, width - length, SPEED_RUNNER); // Default SPEED RUNNER at the moment
+	        	switch (playerType)
+	        	{
+		    		case SPEED_RUNNER:
+		    			//return buildSpeedRunnerLevel();
+		    			length += 1;
+		    		case COMPLETIONIST:
+		    			//return buildCompletionistLevel();
+		    			length += 1;
+		    		case CASUAL:
+		    			//return buildCasualLevel();
+		    			length += 1;
+		    	}
 	        }
 
 	        //set the end piece
@@ -114,23 +124,6 @@ public class MyLevel extends Level{
 	        fixWalls();
 
 	    }
-
-	    private int buildZone(int x, int maxLength, int playerType) {
-	    	switch (playerType) {
-	    		case SPEED_RUNNER:
-	    			//return buildSpeedRunnerLevel();
-	    			return 1;
-	    		case COMPLETIONIST:
-	    			//return buildCompletionistLevel();
-	    			return 1;
-	    		case CASUAL:
-	    			//return buildCasualLevel();
-	    			return 1;
-	    	}
-
-	    	return 0;
-	    }
-
 
 	    private int buildJump(int xo, int maxLength)
 	    {	gaps++;
