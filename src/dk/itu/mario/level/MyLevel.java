@@ -42,12 +42,18 @@ public class MyLevel extends Level{
 		public MyLevel(int width, int height, long seed, int difficulty, int type, GamePlay playerMetrics)
 	    {
 	        this(width, height);
-	        this.playerM = playerMetrics;
 	        System.out.println( "Seed for level: " + seed );
-	        creat(seed, difficulty, type);
+
+	        int playerType = classifyPlayer( playerMetrics );
+	        creat(seed, difficulty, type, playerType);
 	    }
 
-	    public void creat(long seed, int difficulty, int type)
+	    public int classifyPlayer( GamePlay playerMetrics )
+	    {
+	    	return SPEED_RUNNER;
+	    }
+
+	    public void creat(long seed, int difficulty, int type, int playerType)
 	    {
 	        this.type = type;
 	        this.difficulty = difficulty;
