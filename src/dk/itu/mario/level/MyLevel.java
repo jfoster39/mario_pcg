@@ -20,6 +20,15 @@ public class MyLevel extends Level{
 	 public final int SPEED_RUNNER  = 0;
 	 public final int COMPLETIONIST = 1;
 	 public final int CASUAL   	    = 2;
+	 
+	 private static final int ODDS_STRAIGHT = 0;
+	 private static final int ODDS_HILL_STRAIGHT = 1;
+	 private static final int ODDS_TUBES = 2;
+	 private static final int ODDS_JUMP = 3;
+	 private static final int ODDS_CANNONS = 4;
+	    
+	 private int[] odds = new int[5];
+	 private int totalOdds;
 
 
 	private static Random levelSeedRandom = new Random();
@@ -60,12 +69,66 @@ public class MyLevel extends Level{
 	    		return CASUAL;
 	    	}
 	    }
+	    
+	    private int buildZone(int x, int maxLength) {
+	        int t = random.nextInt(totalOdds);
+	        int type = 0;
+
+	        for (int i = 0; i < odds.length; i++) {
+	            if(odds[ODDS_JUMP] <= t*2+30){
+	            	type = ODDS_JUMP;
+	            	break;
+	        }
+	        	if (odds[i] <= t) {
+	                type = i;
+	            }
+	        }
+
+	        switch (type) {
+	        case ODDS_STRAIGHT:
+	            return buildStraight(x, maxLength, false);
+	        case ODDS_HILL_STRAIGHT:
+	            return buildHillStraight(x, maxLength);
+	        case ODDS_TUBES:
+	            return buildTubes(x, maxLength);
+	        case ODDS_JUMP:
+	            if (gaps < Constraints.gaps)
+	                return buildJump(x, maxLength);
+	            else
+	                return buildStraight(x, maxLength, false);
+	        case ODDS_CANNONS:
+	            return buildCannons(x, maxLength);
+	        }
+	        return 0;
+	    }
 
 	    public void creat(long seed, int difficulty, int type, int playerType)
 	    {
 	        this.type = type;
 	        this.difficulty = difficulty;
+	        
+	        odds[ODDS_STRAIGHT] = 30;
+	        odds[ODDS_HILL_STRAIGHT] = 20;
+	        odds[ODDS_TUBES] = 2 + 2 * difficulty;
+	        int jumpDifficulty = 1;
+	        // adapt the game so that it has a number of gaps proportional to the
+	        //number of jumps the player made in the test level. The more the jumps,
+	        //the more the gaps.
+	        if (playerType==0)
+	            jumpDifficulty = 2;
+	        odds[ODDS_JUMP] =  jumpDifficulty;
+	        odds[ODDS_CANNONS] = -10 + 5 * difficulty;
 
+	        for (int i = 0; i < odds.length; i++) {
+	            //failsafe (no negative odds)
+	            if (odds[i] < 0) {
+	                odds[i] = 0;
+	            }
+
+	            totalOdds += odds[i];
+	            odds[i] = totalOdds - odds[i];
+	        }
+	        
 	        lastSeed = seed;
 	        random = new Random(seed);
 
@@ -86,7 +149,7 @@ public class MyLevel extends Level{
 		    			length += 1;
 		    		case CASUAL:
 		    			//return buildCasualLevel();
-		    			length += 1;
+		    	        length += buildZone(length, getWidth() - length);
 		    	}
 	        }
 
