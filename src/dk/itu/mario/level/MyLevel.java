@@ -73,19 +73,35 @@ public class MyLevel extends Level{
 	        int length = 0;
 	        length += buildStraight(0, width, true);
 
-	        //create all of the medium sections
+	        playerType = SPEED_RUNNER;
+	        System.out.println( "Speed Runner Type set manually -> remove for classification" );
+
+	        // Build Lower Section of level
 	        while (length < width - 64)
 	        {
 	        	switch (playerType)
-	        	{
+                {
 		    		case SPEED_RUNNER:
-		    			//return buildSpeedRunnerLevel();
-		    			length += 1;
+		    			length += buildStraight( length, width - length, true );
 		    		case COMPLETIONIST:
-		    			//return buildCompletionistLevel();
 		    			length += 1;
 		    		case CASUAL:
-		    			//return buildCasualLevel();
+		    			length += 1;
+		    	}
+	        }
+
+	        length = 0;
+
+	        // Build higher section of level
+	        while (length < width - 64)
+	        {
+	        	switch (playerType)
+                {
+		    		case SPEED_RUNNER:
+		    			length += buildSpeedSection(length, width - length, random.nextInt(8)+2);
+		    		case COMPLETIONIST:
+		    			length += 1;
+		    		case CASUAL:
 		    			length += 1;
 		    	}
 	        }
@@ -132,6 +148,29 @@ public class MyLevel extends Level{
 	        fixWalls();
 
 	    }
+
+	    private int buildSpeedSection(int xo, int maxLength, int brickHeight) {
+	        int length = random.nextInt(7) + 2;
+
+	        int floor = 5;
+
+			while( brickHeight - floor > 5 )
+			{
+				brickHeight = random.nextInt( 8 ) + 2;
+			}
+
+			if (length > maxLength)
+				length = maxLength;
+			floor = height - 1;
+			for (int x = xo; x < xo + length; x++) {
+				setBlock(x, floor - brickHeight, BLOCK_EMPTY);
+                setBlock(x, floor - (brickHeight + 1), COIN);
+				BLOCKS_EMPTY++;
+                COINS++;
+			}
+
+			return length;
+		}
 
 	    private int buildJump(int xo, int maxLength)
 	    {	gaps++;
@@ -386,10 +425,10 @@ public class MyLevel extends Level{
 
 	    private int buildStraight(int xo, int maxLength, boolean safe)
 	    {
-	        int length = random.nextInt(10) + 2;
+	        int length = random.nextInt(10);
 
 	        if (safe)
-	        	length = 10 + random.nextInt(5);
+	        	length = 8 + random.nextInt(5);
 
 	        if (length > maxLength)
 	        	length = maxLength;
