@@ -313,7 +313,7 @@ public class MyLevel extends Level{
 	                    occupied[xxo - xo] = true;
 	                    occupied[xxo - xo + l] = true;
 	                    addEnemyLine(xxo, xxo + l, h - 1);
-	                    if (random.nextInt(4) == 0)
+	                    if (random.nextInt(2) == 0)
 	                    {
 	                        decorate(xxo - 1, xxo + l + 1, h);
 	                        keepGoing = false;
@@ -331,11 +331,15 @@ public class MyLevel extends Level{
 	                            if (getBlock(x, y) == 0)
 	                            {
 	                                setBlock(x, y, (byte) (xx + yy * 16));
+	                                //setBlock(x, floor - 2, BLOCK_COIN);
+	                                //BLOCKS_COINS++;
 	                            }
 	                            else
 	                            {
 	                                if (getBlock(x, y) == HILL_TOP_LEFT) setBlock(x, y, HILL_TOP_LEFT_IN);
 	                                if (getBlock(x, y) == HILL_TOP_RIGHT) setBlock(x, y, HILL_TOP_RIGHT_IN);
+	                                //setBlock(x, floor + 4, BLOCK_COIN);
+	                                //BLOCKS_COINS++;
 	                            }
 	                        }
 	                    }
@@ -470,20 +474,22 @@ public class MyLevel extends Level{
 	        //add an enemy line above the box
 	        addEnemyLine(xStart + 1, xLength - 1, floor - 1);
 
-	        int s = random.nextInt(4);
-	        int e = random.nextInt(4);
+	        int s = random.nextInt(2);
+	        int e = random.nextInt(2);
 
 	        if (floor - 2 > 0){
 	            if ((xLength - 1 - e) - (xStart + 1 + s) > 1){
 	                for(int x = xStart + 1 + s; x < xLength - 1 - e; x++){
 	                    setBlock(x, floor - 2, COIN);
 	                    COINS++;
+                        setBlock(x, floor - 4, BLOCK_COIN);
+                        BLOCKS_COINS++;
 	                }
 	            }
 	        }
 
-	        s = random.nextInt(4);
-	        e = random.nextInt(4);
+	        s = random.nextInt(10);
+	        e = random.nextInt(10);
 
 	        //this fills the set of blocks and the hidden objects inside them
 	        if (floor - 4 > 0)
@@ -494,9 +500,9 @@ public class MyLevel extends Level{
 	                {
 	                    if (rocks)
 	                    {
-	                        if (x != xStart + 1 && x != xLength - 2 && random.nextInt(3) == 0)
+	                        if (x != xStart + 1 && x != xLength - 2 && random.nextInt(1) == 0)
 	                        {
-	                            if (random.nextInt(4) == 0)
+	                            if (random.nextInt(2) == 0)
 	                            {
 	                                setBlock(x, floor - 4, BLOCK_POWERUP);
 	                                BLOCKS_POWER++;
@@ -507,9 +513,9 @@ public class MyLevel extends Level{
 	                                BLOCKS_COINS++;
 	                            }
 	                        }
-	                        else if (random.nextInt(4) == 0)
+	                        else if (random.nextInt(2) == 0)
 	                        {
-	                            if (random.nextInt(4) == 0)
+	                            if (random.nextInt(2) == 0)
 	                            {
 	                                setBlock(x, floor - 4, (byte) (2 + 1 * 16));
 	                            }
