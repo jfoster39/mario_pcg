@@ -73,8 +73,7 @@ public class MyLevel extends Level{
 	        int length = 0;
 	        length += buildStraight(0, width, true);
 
-	        playerType = SPEED_RUNNER;
-	        System.out.println( "Speed Runner Type set manually -> remove for classification" );
+	        playerType = COMPLETIONIST;
 
 	        // Build Lower Section of level
 	        while (length < width - 64)
@@ -84,7 +83,8 @@ public class MyLevel extends Level{
 		    		case SPEED_RUNNER:
 		    			length += buildStraight( length, width - length, true );
 		    		case COMPLETIONIST:
-		    			length += 1;
+		    			length += buildHillStraight( length, width - length );
+		    			length += buildStraight( length, width - length, false );
 		    		case CASUAL:
 		    			length += 1;
 		    	}
