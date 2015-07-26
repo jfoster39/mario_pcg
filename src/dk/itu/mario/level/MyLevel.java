@@ -51,12 +51,15 @@ public class MyLevel extends Level{
 	    public int classifyPlayer( GamePlay playerMetrics )
 	    {
 	    	if (((float)playerMetrics.timeSpentRunning/playerMetrics.completionTime)>((float)2/3)){
+	    		System.out.println("Your player type is speed runner");
 	    		return SPEED_RUNNER;
 	    	}
 	    	if (((float)playerMetrics.coinsCollected/playerMetrics.totalCoins)>((float)3/4)){
+	    		System.out.println("Your player type is completionist");
 	    		return COMPLETIONIST;
 	    	}
 	    	else{
+	    		System.out.println("Your player type is casual");
 	    		return CASUAL;
 	    	}
 	    }
@@ -64,7 +67,7 @@ public class MyLevel extends Level{
 	    public void creat(long seed, int difficulty, int type, int playerType)
 	    {
 	        this.type = type;
-	        this.difficulty = difficulty;
+	        this.difficulty = difficulty+1;
 
 	        lastSeed = seed;
 	        random = new Random(seed);
